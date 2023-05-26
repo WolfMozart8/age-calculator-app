@@ -1,9 +1,12 @@
 <script setup>
+import FormV from './components/FormV.vue';
+import outputV from './components/outputV.vue';
 </script>
 
 <template>
   <main class="wrapper">
-    
+    <FormV />
+    <outputV />
   </main>
 </template>
 
@@ -32,7 +35,11 @@ body {
   height: 30rem;
   background-color: var(--white);
   margin: 0 auto;
+  padding: 50px;
 
   border-radius: 20px 20px 30% 20px;
+
+  display: grid;
+  grid-template-rows: 1fr 2fr;
 }
 </style>
