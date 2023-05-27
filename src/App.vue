@@ -21,10 +21,15 @@ import outputV from './components/outputV.vue';
   --light-grey: hsl(0, 0%, 86%);
   --smokey-grey: hsl(0, 1%, 44%);
   --off-black: hsl(0, 0%, 8%);
+
+  /* font (400i - 700 - 800i)*/ 
+  --main-font: 'Poppins', sans-serif;
+
 }
 body {
   background-color: var(--off-white);
-  font-size: 32px;
+  font-family: var(--main-font);
+  font-size: 16px;
   height: 100vh;
   display: flex;
   justify-content: center;
