@@ -1,11 +1,13 @@
 <template>
     <div class="btn-container">
-        <button><img src="../../assets/img/icon-arrow.svg" alt="button"></button>
+        <button
+            @click="$emit('create-output')"
+        ><img src="../../assets/img/icon-arrow.svg" alt="button"></button>
     </div>
 </template>
 
 <script setup>
-
+defineEmits(["create-output"])
 </script>
 
 <style scoped>

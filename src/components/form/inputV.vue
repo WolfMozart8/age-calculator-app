@@ -1,16 +1,19 @@
 <template>
     <div class="input-v">
-        <label for="day">DAY</label>
-        <input type="text" id="day">
+        <label for="date">date</label>
+        <input type="text" id="date"
+            :value="modelValue"
+            @input="$emit('update:modelValue', $event.target.value)">
     </div>
 </template>
 
 <script setup>
-
+defineProps(['modelValue'])
+defineEmits(['update:modelValue']);
 </script>
 
 <style scoped>
-.day {
+.date {
     letter-spacing: 1.2;
 }
 
