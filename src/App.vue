@@ -1,12 +1,17 @@
 <script setup>
+import { ref } from 'vue';
 import FormV from './components/FormV.vue';
 import outputV from './components/outputV.vue';
+
+const validDate = ref(null); // last result (if valid)
+
+
 </script>
 
 <template>
   <main class="wrapper">
-    <FormV />
-    <outputV />
+    <FormV @get-valid-date="(dateResult) => {validDate = dateResult;}"/>
+    <outputV :result="validDate"/>
   </main>
 </template>
 
@@ -46,5 +51,10 @@ body {
 
   display: grid;
   grid-template-rows: 1fr 2fr;
+}
+@media (max-width: 768px) {
+  .wrapper {
+    
+  }
 }
 </style>

@@ -1,20 +1,62 @@
 <template>
     <div class="input-v">
-        <label for="date">date</label>
-        <input type="text" id="date"
-            :value="modelValue"
-            @input="$emit('update:modelValue', $event.target.value)">
+        <label for="date">{{ title }}</label>
+        <input
+        type="number"
+        id="date"
+        :value="modelValue"
+        @input="$emit('update:modelValue',$event.target.value)"
+        :placeholder="placeH"
+        required>
     </div>
+        <!-- :value="modelValue" -->
+        <!-- @input="$emit('update:modelValue', $event.target.value)"  -->
+        <!-- @input="validation($event)" -->
 </template>
 
 <script setup>
-defineProps(['modelValue'])
+import { onMounted, ref, watch } from 'vue';
+
+defineProps(['modelValue', "title", "placeH", "minV", "maxV"])
 defineEmits(['update:modelValue']);
+
+const isValid = ref(null)
+const isBlank = ref(true)
+const inputValue = ref(null)
+
+const validation = (e) => {
+    inputValue.value = e.target.value
+    isValid.value = e.target.checkValidity()
+    isBlank.value = e.target.validity.valueMissing
+};
+
+defineExpose({
+    inputValue,
+    isValid,
+    isBlank,
+});
 </script>
 
 <style scoped>
+/* remove increment arrows */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"] {
+    -webkit-appearance: none;
+    /* Chrome, Safari */
+    -moz-appearance: textfield;
+    /* Firefox */
+    appearance: none;
+    margin: 0;
+}
+
 .date {
     letter-spacing: 1.2;
+}
+
+.red {
+    background-color: red;
+    color: yellow;
 }
 
 label {
@@ -37,4 +79,5 @@ input {
     width: 60%;
     border: 1px solid var(--light-grey);
     border-radius: 5px;
-}</style>
+}
+</style>

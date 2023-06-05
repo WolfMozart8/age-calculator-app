@@ -1,13 +1,14 @@
 <template>
     <div class="btn-container">
-        <button
+        <button 
+            type="submit"
             @click="$emit('create-output')"
         ><img src="../../assets/img/icon-arrow.svg" alt="button"></button>
     </div>
 </template>
 
 <script setup>
-defineEmits(["create-output"])
+defineEmits(["create-output"]);
 </script>
 
 <style scoped>
@@ -25,5 +26,9 @@ button {
     border-radius: 50%;
     border: none;
     background-color: var(--purple);
+}
+button:hover {
+    background-color: var(--off-black);
+    cursor: pointer;
 }
 </style>

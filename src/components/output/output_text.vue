@@ -1,11 +1,11 @@
 <template>
     <div class="date-text">
-        <p><span class="date-number">38</span>years</p>
+        <p><span class="date-number">{{ outputNumber }}</span>{{ title }}</p>
     </div>
 </template>
 
 <script setup>
-
+defineProps(["title", "outputNumber"]);
 </script>
 
 <style scoped>
