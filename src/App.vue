@@ -27,7 +27,7 @@ const validDate = ref(null); // last result (if valid)
   --smokey-grey: hsl(0, 1%, 44%);
   --off-black: hsl(0, 0%, 8%);
 
-  /* font (400i - 700 - 800i)*/ 
+  /* font (400i - 700 - 800i)*/
   --main-font: 'Poppins', sans-serif;
 
 }
@@ -54,7 +54,7 @@ body {
 }
 @media (max-width: 768px) {
   .wrapper {
-    
+    width: 70%;
   }
 }
 </style>

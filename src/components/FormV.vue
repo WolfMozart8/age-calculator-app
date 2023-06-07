@@ -1,14 +1,14 @@
 <template>
     <form @submit.prevent="$emit('getValidDate', ageResult)">
-        <inputV v-model:model-value="birth.day" title="DAY" place-h="DD" />
-        <inputV v-model:model-value="birth.month" title="MONTH" place-h="MM"/>
-        <inputV v-model:model-value="birth.year" title="YEAR" place-h="YYYY"/>
+        <inputV :classes="validate" v-model:model-value="birth.day" title="DAY" place-h="DD" :error="errorDay" error-message="Must be a valid Day"/>
+        <inputV :classes="validate" v-model:model-value="birth.month" title="MONTH" place-h="MM" :error="errorMonth" error-message="Must be a valid month"/>
+        <inputV :classes="validate" v-model:model-value="birth.year" title="YEAR" place-h="YYYY" :error="errorYear" error-message="Must be a in the past" element-title="value between 1600 - this year"/>
         <buttonV @create-output="calculateAge(birth)" />
     </form>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import inputV from './form/inputV.vue';
 import buttonV from './form/buttonV.vue';
 
@@ -19,78 +19,91 @@ const birth = ref({
     month: null,
     year: null,
 })
-
+const valid = ref(true)
 const ageResult = ref(null)
 
+const getLastDay = (mm, yyyy) => { // last day of the month
+    const lastDay = new Date(yyyy, mm + 1, 0)
+    return lastDay.getDate()
+};
+
+const validate = computed(() => { // change the class
+    return valid.value ? "" : "error"
+})
+
+// errorDay, errorMonth and errorYear
+const errorDay = computed(() => {
+    const lastday = getLastDay(birth.value.month, birth.value.year)
+    if ( birth.value.day > lastday || birth.value.day < 1) {
+        return true
+    } else {
+        return false
+    }
+
+})
+const errorMonth = computed(() => {
+    if (birth.value.month < 1 || birth.value.month > 12){
+        return true
+    }else {
+        return false
+    }
+})
+const errorYear = computed(() => {
+    const today = new Date()
+    const thisYear = today.getFullYear()
+
+    if (birth.value.year > thisYear || birth.value.year < 1600){
+        return true
+    }else {
+        return false
+    }
+})
+
+// check form validity
 const isValid = (obj) => {
+
     const lastday = getLastDay(obj.month, obj.year)
+    const today = new Date()
+    const thisYear = today.getFullYear()
+
     if (obj.day === "" || obj.day === null || obj.month === "" || obj.month === null || obj.year === "" || obj.year === null) {
+        console.log("blankkkk");
+        valid.value = false
+        return false
+    }
+    else if (obj.day < 1 || obj.month < 1 || obj.year < 1) {
+        console.log("must be a positive number");
+        valid.value = false
         return false
     }
     else if (obj.day > lastday) {
         console.log("select a valid day");
+        valid.value = false
+        return false
+    }
+    else if (obj.year > thisYear || obj.year < 1600) {
+        console.log("select a valid year");
+        valid.value = false
+        return false
+    }
+    else if (obj.month > 12) {
+        console.log("select a valid month");
+        valid.value = false
         return false
     }
     else {
+        valid.value = true
         return true
     }
 }
-// const val = (e) => {
-//     e.target.checkValidity()
-//     e.target.validity.valueMissing
-// }
-// // check the correct max uinputDuts
-// const actualYear = ref(new Date().getFullYear())
-// const lastDay = computed(() => {
-//     const lastDay = new Date(birth.value.year, birth.value.month + 1, 0)
-//     // const lastDay = new Date(inputY.value.inputValue, inputM.value.inputValue + 1, 0)
-//     return lastDay.getDate()
-// })
 
-
-
-// const form = ref(null)
-// const inputD = ref(null)
-// const inputM = ref(null)
-// const inputY = ref(null)
-
-// const validation = (input1, input2, input3) => {
-//     const value1 = input1.value.inputValue
-//     const value2 = input2.value.inputValue
-//     const value3 = input3.value.inputValue
-
-//     const isValid1 = input1.value.isValid
-//     const isValid2 = input2.value.isValid
-//     const isValid3 = input3.value.isValid
-
-//     const isBlank1 = input1.value.isBlank
-//     const isBlank2 = input2.value.isBlank
-//     const isBlank3 = input3.value.isBlank
-
-//     if (isBlank1 || isBlank2 || isBlank3) {
-//         return false
-//     }
-//     else if (!isValid1 || !isValid2 || !isValid3) {
-//         return false
-//     }
-//     else {
-//         birth.value.day = value1
-//         birth.value.month = value2
-//         birth.value.year = value3
-
-//         return true
-//     }
-
-//     console.log(value1 + " " + isValid1 + " " + isBlank1)
-//     console.log(value2 + " " + isValid2 + " " + isBlank2)
-//     console.log(value3 + " " + isValid3 + " " + isBlank3)
-// }
+// calculate age
 const calculateAge = (obj) => {
     const birthdate = new Date(`${obj.year}-${obj.month}-${obj.day}`) // yyyy-mm-dd
     // const birthdate = new Date(`${inputY.value.inputValue}-${inputM.value.inputValue}-${inputD.value.inputValue}`) // yyyy-mm-dd
     const today = new Date()
 
-    if (!isValid(obj)) {
+    if (!isValid(obj)) { // if not valid, ageResult doesnt change
         return
     }
 
@@ -114,15 +127,7 @@ const calculateAge = (obj) => {
         monthsOld = 12 - Math.abs(monthsOld)
         yearsOld--
     }
-
     ageResult.value = { day: daysOld, month: monthsOld, year: yearsOld }
-    console.log(ageResult.value);
-    console.log(birth.value);
-};
-
-const getLastDay = (mm, yyyy) => { // last day of the month
-    const lastDay = new Date(yyyy, mm + 1, 0)
-    return lastDay.getDate()
 };
 
 </script>
@@ -134,12 +139,8 @@ form {
     grid-template-columns: repeat(4, 1fr);
     grid-row: 1 / 2;
 
-    /* border-bottom: 1px solid black; */
 }
-form > div input,
-form > div .error {
-    background-color: red;
-}
+
 @media (max-width: 768px) {
     form {
         grid-template-columns: repeat(3, 1fr);

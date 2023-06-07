@@ -20,4 +20,9 @@ p {
     font-size: 5rem;
     margin: 0;
 }
+@media (max-width: 768px) {
+    p {
+        font-size: 4rem;
+    }
+}
 </style>

@@ -1,40 +1,29 @@
 <template>
+
     <div class="input-v">
-        <label for="date">{{ title }}</label>
+        <label :class="classes" for="date">{{ title }}</label>
         <input
+        ref="input"
+        :class="classes"
         type="number"
         id="date"
         :value="modelValue"
         @input="$emit('update:modelValue',$event.target.value)"
         :placeholder="placeH"
         required>
+        <span :title="elementTitle" v-if="input" :class="classes">{{ !error ? "" : (input.value ? errorMessage : "This field is required") }}</span>
     </div>
-        <!-- :value="modelValue" -->
-        <!-- @input="$emit('update:modelValue', $event.target.value)"  -->
-        <!-- @input="validation($event)" -->
+
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref } from 'vue';
 
-defineProps(['modelValue', "title", "placeH", "minV", "maxV"])
+const input = ref(null)
+
+defineProps(['modelValue', "title", "placeH", "minV", "maxV", "classes", "error", "errorMessage", "elementTitle"])
 defineEmits(['update:modelValue']);
 
-const isValid = ref(null)
-const isBlank = ref(true)
-const inputValue = ref(null)
-
-const validation = (e) => {
-    inputValue.value = e.target.value
-    isValid.value = e.target.checkValidity()
-    isBlank.value = e.target.validity.valueMissing
-};
-
-defineExpose({
-    inputValue,
-    isValid,
-    isBlank,
-});
 </script>
 
 <style scoped>
@@ -53,14 +42,12 @@ input[type="number"] {
 .date {
     letter-spacing: 1.2;
 }
-
-.red {
-    background-color: red;
-    color: yellow;
+span {
+    display: none;
 }
 
 label {
-    font-size: 24px;
+    font-size: 1rem;
     margin-bottom: 15px;
     color: var(--smokey-grey);
     font-weight: 700;
@@ -79,5 +66,19 @@ input {
     width: 60%;
     border: 1px solid var(--light-grey);
     border-radius: 5px;
+}
+input.error {
+    border-color: var(--light-red);
+}
+label.error {
+    color: var(--light-red);
+}
+span.error {
+    display: inline;
+    font-family: var(--main-font);
+    font-size: 0.7rem;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--light-red);
 }
 </style>
