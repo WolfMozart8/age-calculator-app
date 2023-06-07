@@ -21,8 +21,19 @@ p {
     margin: 0;
 }
 @media (max-width: 768px) {
+    div {
+        margin-bottom: -30px;
+    }
     p {
         font-size: 4rem;
+    }
+}
+@media (max-width: 480px) {
+    div {
+        margin-bottom: 0;
+    }
+    p {
+        font-size: 3rem;
     }
 }
 </style>

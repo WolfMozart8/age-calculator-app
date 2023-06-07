@@ -146,4 +146,9 @@ form {
         grid-template-columns: repeat(3, 1fr);
     }
 }
+@media (max-width: 480px) {
+    form {
+        gap: 5px;
+    }
+}
 </style>

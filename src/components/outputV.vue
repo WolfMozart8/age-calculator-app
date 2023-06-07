@@ -35,4 +35,9 @@ const checkValidity = (item) => {
     padding-top: 10px;
 
 }
+@media (max-width: 768px) {
+    .output {
+        justify-content: center;
+    }
+}
 </style>

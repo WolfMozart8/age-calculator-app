@@ -17,7 +17,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 
 const input = ref(null)
 
@@ -67,6 +67,10 @@ input {
     border: 1px solid var(--light-grey);
     border-radius: 5px;
 }
+input:focus {
+    outline: none;
+    border-color: var(--purple);
+}
 input.error {
     border-color: var(--light-red);
 }
@@ -80,5 +84,15 @@ span.error {
     font-style: italic;
     font-weight: 400;
     color: var(--light-red);
+}
+@media (max-width: 768px) {
+    input {
+        font-size: 1.5rem;
+    }
+}
+@media (max-width: 480px) {
+    input {
+        font-size: 1.2rem;
+    }
 }
 </style>
